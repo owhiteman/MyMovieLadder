@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Index";
+
+    string search = ViewData["MovieTitle"].ToString();
+
+    GetSearchResults obj = new GetSearchResults();
+    obj.GetMovie(search);
+    int resultTotal = Math.Min(obj.GetResultLength(), 20);
+}
+
+<h2>Movie Results @resultTotal</h2>
+
+<div id="movie-list">
+    @for (int i = 0; i < resultTotal; i++)
+    {
+        <div class="movie">
+            <a asp-protocol="https"
+               asp-host="themoviedb.org"
+               asp-controller="movie"
+               asp-action=@obj.MovieID(i)
+               target="_blank">
+                <p><img src=@obj.PosterPath(i) alt=@obj.MovieTitle(i)></p>
+            </a>
+            <p><b>@obj.MovieTitle(i)</b></p>
+            <p>Release Date: @obj.MovieReleaseDate(i)</p>
+            <p>Rating: @obj.MovieRating(i)</p>
+
+
+        </div>
+
+    }
+
+</div>
